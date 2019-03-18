@@ -5,8 +5,8 @@
 # After login and have a token, request header
   ```json
     {
-      accept-version: v1
-      authorization: bearer {json-web-token}
+      "accept-version": "v1"
+      "authorization": "bearer json-web-token"
     }
   ```
 
@@ -44,19 +44,75 @@
   - response:
     ```json
     {
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "password": "string",
+      "confirmPassword": "string",
+      "countryId": "string"
+     }
+     ```
+- Get a all customers: GET /api/customers
+  - response: 
+    ```json
+    [
+      {
+        "firstName": "string",
+        "lastName": "string",
+        "email": "string",
+        "password": "string",
+        "confirmPassword": "string",
+        "countryId": "string"
+      }
+    ]
+    ```
+- Get a customer by email: GET /api/customers/email/{email}
+  - response:
+    ```json
+    {
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "password": "string",
+      "confirmPassword": "string",
+      "countryId": "string"
+     }
+     ```
+- Get a purchases history by customerId: GET /api/customers/{customerId}/purchases
+  - response:
+    ```json
+    {
+      "customerId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "totalPurchases": 10,
+      "totalProductsPurchased": 10,
+      "totalPrice": 100
+    }
+     ```
+- Add a customer: POST /api/customers
+  - request: 
+  ```json
+    {
     "firstName": "string",
     "lastName": "string",
     "email": "string",
     "password": "string",
     "confirmPassword": "string",
     "countryId": "string"
-     }
-     ```
-- Get a all customers: GET /api/customers
-- Get a customer by email: GET /api/customers/email/{email}
-- Get a customer by purchases: GET /api/customers/purchases
-- Add a customer: POST /api/customers
+    }
+ ```
 - Update a customer by id: PATCH /api/customers/{id}
+  - request body:
+  ```json
+  {
+    "customerId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "countryId": "string"
+  }
+  ```
 - Delete a customer by id: DELETE /api/customers/{id}
 
 # Products API
@@ -88,13 +144,45 @@
     }
   ```
 - Update a product by id: PATCH /api/products/{id}
+  - request body:
+  ```json
+    {
+    "name": "string",
+    "code": "string",
+    "quantity": 0,
+    "cost": 0
+    }
+   ```
+- Update a product without code: PATCH /api/products/{id}
+  - request body:
+  ```json
+    {
+    "name": "string",
+    "quantity": 0,
+    "cost": 0
+    }
+   ```
 - Delete a product by id: DELETE /api/products/{id}
 
 # Carts API
 - Get a cart by customer id: GET /api/carts/customerId/{id}
+  - response: 
+    ```json
+      {
+        "customerId": "string",
+        "products":
+          [
+            {
+              "code": "string",
+              "name": "string",
+              "quantity": 10
+            }
+          ],
+        "createdDate": "dateTimeString"
+      }
+    ```
 - Add a cart: POST /api/carts
   - request body:
-    - request body: 
     ```json
       {
         "customerId": "id",
@@ -103,6 +191,14 @@
       }
     ```
 - Add a checkout by customer: POST /api/checkout/customers/{customerId}
+  - response:
+  ```json
+    {
+      "purchaseId": "guid",
+      "totalPrice": 100,
+      "checkOutIssue" : ""
+    }
+  ```
 - Delete a cart: DELETE /api/carts
   - request body: 
   ```json
