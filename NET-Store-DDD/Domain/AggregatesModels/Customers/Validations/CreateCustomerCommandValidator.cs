@@ -21,10 +21,8 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Validations
             RuleFor(customer => customer.Email).EmailAddress().WithMessage("Invalid Email Address");
 
             //RuleFor(customer => customer.Password).NotEmpty().WithMessage("The password is required");
-            //RuleFor(customer => customer.Password).Must(ValidatePassword).WithMessage("password must be of minimum 8 characters length, includes number, " +
-            //                                                                          "upper char and lower char");
-
-            RuleFor(customer => customer.CountryId).NotEmpty().WithMessage("The country is required");
+            //RuleFor(customer => customer.Password).Must(ValidatePassword)
+            //    .WithMessage("password must be of minimum 8 characters length, " + "includes number, " + "upper char and lower char");
         }
 
         /// <summary>

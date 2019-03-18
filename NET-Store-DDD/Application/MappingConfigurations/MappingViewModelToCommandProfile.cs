@@ -17,9 +17,9 @@ namespace StoreDDD.ApplicationLayer.MappingConfigurations
         {
             //customers
             CreateMap<AddNewCustomerViewModel, CreateCustomerCommand>()
-                .ConstructUsing(c => new CreateCustomerCommand(c.FirstName, c.LastName, c.Email, c.CountryId));
+                .ConstructUsing(c => new CreateCustomerCommand(c.FirstName, c.LastName, c.Email, c.Password));
             CreateMap<UpdateCustomerViewModel, UpdateCustomerCommand>()
-                .ConstructUsing(c => new UpdateCustomerCommand(c.CustomerId, c.FirstName, c.LastName, c.CountryId));
+                .ConstructUsing(c => new UpdateCustomerCommand(c.CustomerId, c.FirstName, c.LastName));
             CreateMap<RemoveCustomerViewModel, RemoveCustomerCommand>()
                .ConstructUsing(c => new RemoveCustomerCommand(c.CustomerId));
 

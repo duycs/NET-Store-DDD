@@ -4,7 +4,6 @@ using StoreDDD.DomainCore.Events;
 using StoreDDD.DomainCore.Notification;
 using StoreDDD.DomainCore.Repository;
 using StoreDDD.DomainCore.UnitOfWork;
-using StoreDDD.DomainLayer.AggregatesModels.Countries;
 using StoreDDD.DomainLayer.AggregatesModels.Customers.Commands;
 using StoreDDD.DomainLayer.AggregatesModels.Customers.Events;
 using StoreDDD.DomainLayer.AggregatesModels.Customers.Models;
@@ -19,7 +18,6 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.CommandHandlers
     public class CustomerCommandHandler : IRequestHandler<CreateCustomerCommand>, IRequestHandler<UpdateCustomerCommand>, IRequestHandler<RemoveCustomerCommand>
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IRepository<Country> _countryRepository;
         private readonly IEventDispatcher _eventDispatcher;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -27,14 +25,12 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.CommandHandlers
         /// Initializes a new instance of the <see cref="CustomerCommandHandler" /> class.
         /// </summary>
         /// <param name="customerRepository">The customer repository.</param>
-        /// <param name="countryRepository">The country repository.</param>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="eventDispatcher">The event dispatcher.</param>
-        public CustomerCommandHandler(ICustomerRepository customerRepository, IRepository<Country> countryRepository, IUnitOfWork unitOfWork,
+        public CustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork,
             IEventDispatcher eventDispatcher)
         {
             _customerRepository = customerRepository;
-            _countryRepository = countryRepository;
             _unitOfWork = unitOfWork;
             _eventDispatcher = eventDispatcher;
         }
@@ -54,14 +50,7 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.CommandHandlers
                 return Unit.Value;
             }
 
-            var country = _countryRepository.FindById(request.CountryId);
-            if (country == null)
-            {
-                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Country id does not exit in system"));
-                return Unit.Value;
-            }
-
-            var customer = Customer.Create(request.FirstName, request.LastName, request.Email, request.SecurityStamp, request.PasswordHash, country);
+            var customer = Customer.Create(request.FirstName, request.LastName, request.Email, request.Password);
 
             var existingCustomer = _customerRepository.FindByEmail(customer.Email);
             if (existingCustomer != null)
@@ -100,13 +89,6 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.CommandHandlers
                 return Unit.Value;
             }
 
-            var country = _countryRepository.FindById(request.CountryId);
-            if (country == null)
-            {
-                await _eventDispatcher.RaiseEvent(new DomainNotification(request.MessageType, @"Country id does not exit in system"));
-                return Unit.Value;
-            }
-
             var existingCustomer = _customerRepository.FindOne(request.Id);
             if (existingCustomer == null)
             {
@@ -115,14 +97,14 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.CommandHandlers
             }
 
             var customer = new Customer();
-            if (string.IsNullOrEmpty(request.Email) && string.IsNullOrEmpty(request.PasswordHash))
+            if (string.IsNullOrEmpty(request.Email) && string.IsNullOrEmpty(request.Password))
             {
-                customer = Customer.UpdateWithoutEmailAndPassword(request.Id, request.FirstName, request.LastName, country);
+                customer = Customer.UpdateWithoutEmailAndPassword(request.Id, request.FirstName, request.LastName);
                 _customerRepository.UpdateWithoutEmailAndPassword(customer);
             }
             else
             {
-                customer = Customer.Update(request.Id, request.FirstName, request.LastName, request.Email, country, request.PasswordHash);
+                customer = Customer.Update(request.Id, request.FirstName, request.LastName, request.Email, request.Password);
                 _customerRepository.Update(customer);
             }
 

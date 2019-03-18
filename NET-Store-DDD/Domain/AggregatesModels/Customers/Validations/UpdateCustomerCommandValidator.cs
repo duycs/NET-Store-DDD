@@ -18,7 +18,6 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Validations
             RuleFor(customer => customer.Id).NotEmpty().WithMessage("Customer id is required");
             RuleFor(customer => customer.FirstName).NotEmpty().WithMessage("The first name is required");
             RuleFor(customer => customer.LastName).NotEmpty().WithMessage("The last name is required");
-            RuleFor(customer => customer.CountryId).NotEmpty().WithMessage("The country is required");
         }
     }
 }

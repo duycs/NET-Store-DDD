@@ -29,11 +29,5 @@ namespace StoreDDD.ApplicationLayer.Models
         [Required(ErrorMessage = "The last name is required")]
         public string LastName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the country identifier.
-        /// </summary>
-        /// <value>The country identifier.</value>
-        [Required(ErrorMessage = "The country id is required")]
-        public Guid CountryId { get; set; }
     }
 }

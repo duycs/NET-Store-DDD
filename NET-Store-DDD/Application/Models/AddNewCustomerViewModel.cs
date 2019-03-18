@@ -45,11 +45,5 @@ namespace StoreDDD.ApplicationLayer.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        /// <summary>
-        /// Gets or sets the country identifier.
-        /// </summary>
-        /// <value>The country identifier.</value>
-        [Required(ErrorMessage = "The country id is required")]
-        public Guid CountryId { get; set; }
     }
 }

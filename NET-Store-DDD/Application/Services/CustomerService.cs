@@ -76,12 +76,9 @@ namespace StoreDDD.ApplicationLayer.Services
         /// <param name="model">The model.</param>
         public void Add(AddNewCustomerViewModel model)
         {
-            const int saltLength = 64;
             var createCustomerCommand = _mapper.Map<CreateCustomerCommand>(model);
-            var passwordResult = PasswordWithSaltHasher.ActionEncrypt(model.Password, saltLength);
 
-            createCustomerCommand.SecurityStamp = passwordResult.Salt;
-            createCustomerCommand.PasswordHash = passwordResult.Digest;
+            // TODO Get password by MD5 enscript
 
             _commandDispatcher.Send(createCustomerCommand);
         }
@@ -143,6 +140,19 @@ namespace StoreDDD.ApplicationLayer.Services
             var customer = _customerRepository.FindById(customerId);
             var removeCustomerCommand = _mapper.Map<RemoveCustomerCommand>(customer);
             _commandDispatcher.Send(removeCustomerCommand);
+        }
+
+        /// <summary>
+        /// Get customer by email and password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public CustomerDto GetCustomerByEmailAndPassword(string email, string password)
+        {
+            ISpecification<Customer> alreadyRegisteredSpec = new CustomerAlreadyRegisteredSpec(email);
+            var customer = _customerRepository.FindSingleBySpec(alreadyRegisteredSpec);
+            return _mapper.Map<CustomerDto>(customer); throw new NotImplementedException();
         }
     }
 }

@@ -18,7 +18,6 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Events
         {
             Args.Add("FirstName", Customer.FirstName);
             Args.Add("LastName", Customer.LastName);
-            Args.Add("Country", Customer.CountryId);
         }
     }
 }

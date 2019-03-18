@@ -17,6 +17,14 @@ namespace StoreDDD.ApplicationLayer.Services
         bool IsEmailAvailable(string email);
 
         /// <summary>
+        /// Get customer by email and password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        CustomerDto GetCustomerByEmailAndPassword(string email, string password);
+
+        /// <summary>
         /// Gets the customer by identifier.
         /// </summary>
         /// <param name="customerId">The customer identifier.</param>

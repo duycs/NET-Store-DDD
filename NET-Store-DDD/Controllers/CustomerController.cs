@@ -6,6 +6,14 @@ using StoreDDD.DomainCore.Commands;
 using StoreDDD.DomainCore.Notification;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using StoreDDD.ApplicationLayer.DataTransferObjects;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace StoreDDD.WebApi.Controllers
 {
@@ -17,6 +25,7 @@ namespace StoreDDD.WebApi.Controllers
     [Route("api/customers")]
     public class CustomerController : ApiController
     {
+        private readonly IConfiguration _configuration;
         private readonly ICustomerService _customerService;
 
         /// <summary>
@@ -25,10 +34,34 @@ namespace StoreDDD.WebApi.Controllers
         /// <param name="customerService">The customer service.</param>
         /// <param name="notificationHandler">The notification handler.</param>
         /// <param name="commandBusHandler">The command bus handler.</param>
-        public CustomerController(ICustomerService customerService, INotificationHandler<DomainNotification> notificationHandler,
+        public CustomerController(IConfiguration configuration, ICustomerService customerService, INotificationHandler<DomainNotification> notificationHandler,
             ICommandDispatcher commandBusHandler) : base(notificationHandler, commandBusHandler)
         {
+            _configuration = configuration;
             _customerService = customerService;
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromHeader]string email, [FromHeader]string password)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)) return BadRequest(new { Errors = "UserName or Password is not empty" });
+
+                var customer = _customerService.GetCustomerByEmailAndPassword(email, password);
+                if (customer == null)
+                    return Unauthorized();
+
+                var loginInfo = GetLoginInfo(customer);
+                if (loginInfo == null)
+                    return Unauthorized();
+
+                return Ok(loginInfo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Errors = ex.Message });
+            }
         }
 
         /// <summary>
@@ -162,5 +195,61 @@ namespace StoreDDD.WebApi.Controllers
                 return StatusCode(500, new { Errors = ex.Message });
             }
         }
+
+        public class LoginInfo
+        {
+            public string AccessToken { get; set; }
+            public string TokenType { get; set; }
+            public CustomerDto User { get; set; }
+            public object[] Perms { get; set; }
+        }
+
+        private LoginInfo GetLoginInfo(CustomerDto customer)
+        {
+            // TODO: check perms
+            var perms = new object[] { new { Allows = "read", Resources = "all tables" } };
+
+            if (perms == null)
+                return null;
+
+            var tokenString = BuildToken(customer);
+
+            var loginInfo = new LoginInfo
+            {
+                AccessToken = tokenString,
+                TokenType = "jwt",
+                User = customer,
+                Perms = perms
+            };
+
+            return loginInfo;
+        }
+
+        private string BuildToken(CustomerDto customer)
+        {
+            var claims = new[]
+            {
+                //name id is phone
+                new Claim(JwtRegisteredClaimNames.Email, customer.Email),
+                //other info store in sub
+                new Claim(JwtRegisteredClaimNames.Sub, JsonConvert.SerializeObject(customer)),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat,
+                    new DateTimeOffset(DateTime.Now).ToUniversalTime().ToUnixTimeSeconds().ToString(),
+                    ClaimValueTypes.Integer64)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                _configuration["Jwt:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
     }
 }

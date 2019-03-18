@@ -14,13 +14,12 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Commands
         /// <param name="firstName">The first name.</param>
         /// <param name="lastName">The last name.</param>
         /// <param name="email">The email.</param>
-        /// <param name="countryId">The country identifier.</param>
-        public CreateCustomerCommand(string firstName, string lastName, string email, Guid countryId)
+        public CreateCustomerCommand(string firstName, string lastName, string email, string password)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
-            CountryId = countryId;
+            Password = password;
         }
 
         /// <summary>

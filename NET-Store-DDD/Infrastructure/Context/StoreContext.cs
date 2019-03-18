@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using StoreDDD.DomainLayer.AggregatesModels.Countries;
 using StoreDDD.DomainLayer.AggregatesModels.Customers.Models;
 using StoreDDD.DomainLayer.AggregatesModels.Products.Models;
 using StoreDDD.DomainLayer.AggregatesModels.Purchases.Models;
@@ -21,12 +20,6 @@ namespace StoreDDD.Infrastructure.Context
         /// </summary>
         /// <value>The customers.</value>
         public DbSet<Customer> Customers { get; set; }
-
-        /// <summary>
-        /// Gets or sets the countries.
-        /// </summary>
-        /// <value>The countries.</value>
-        public DbSet<Country> Countries { get; set; }
 
         /// <summary>
         /// Gets or sets the products.
@@ -72,7 +65,6 @@ namespace StoreDDD.Infrastructure.Context
 
             //model builder
             modelBuilder.ApplyConfiguration(new CustomerEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new CountryEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ProductEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PurchaseEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PurchasedProductEntityTypeConfiguration());

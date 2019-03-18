@@ -53,7 +53,7 @@ namespace StoreDDD.Infrastructure.Repositories
             var customerEntry = StoreContext.Entry(customer);
             customerEntry.Property("FirstName").IsModified = true;
             customerEntry.Property("LastName").IsModified = true;
-            customerEntry.Property("CountryId").IsModified = true;
+            customerEntry.Property("Email").IsModified = true;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using StoreDDD.DomainCore.Models;
-using StoreDDD.DomainLayer.AggregatesModels.Countries;
 
 namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Models
 {
@@ -31,19 +30,7 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Models
         /// Gets or sets the password.
         /// </summary>
         /// <value>The password.</value>
-        public virtual string PasswordHash { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the security stamp.
-        /// </summary>
-        /// <value>The security stamp.</value>
-        public virtual string SecurityStamp { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the country identifier.
-        /// </summary>
-        /// <value>The country identifier.</value>
-        public virtual Guid CountryId { get; protected set; }
+        public virtual string Password { get; protected set; }
 
         /// <summary>
         /// Gets or sets the balance.
@@ -51,33 +38,30 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Models
         /// <value>The balance.</value>
         public virtual  decimal Balance { get; protected set; }
 
+       
         /// <summary>
-        /// Creates the specified first name.
+        /// 
         /// </summary>
-        /// <param name="firstName">The first name.</param>
-        /// <param name="lastName">The last name.</param>
-        /// <param name="email">The email.</param>
-        /// <param name="securityStamp">The security stamp.</param>
-        /// <param name="passwordHash">The password hash.</param>
-        /// <param name="country">The country.</param>
-        /// <returns>Customer.</returns>
-        public static Customer Create(string firstName, string lastName, string email, string securityStamp, string passwordHash, Country country)
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static Customer Create(string firstName, string lastName, string email, string password)
         {
-            return Create(Guid.NewGuid(), firstName, lastName, email, securityStamp, passwordHash, country);
+            return Create(Guid.NewGuid(), firstName, lastName, email, password);
         }
 
         /// <summary>
-        /// Creates the specified identifier.
+        /// 
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="firstName">The first name.</param>
-        /// <param name="lastName">The last name.</param>
-        /// <param name="email">The email.</param>
-        /// <param name="securityStamp">The security stamp.</param>
-        /// <param name="passwordHash">The password hash.</param>
-        /// <param name="country">The country.</param>
-        /// <returns>Customer.</returns>
-        public static Customer Create(Guid id, string firstName, string lastName, string email, string securityStamp, string passwordHash, Country country)
+        /// <param name="id"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static Customer Create(Guid id, string firstName, string lastName, string email, string password)
         {
             var customer = new Customer
             {
@@ -85,10 +69,7 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Models
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                CountryId = country.Id,
-                PasswordHash = passwordHash,
-                SecurityStamp = securityStamp,
-                Balance = 0
+                Password = password,
             };
 
             return customer;
@@ -102,20 +83,19 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Models
         /// <param name="lastName">The last name.</param>
         /// <param name="country">The country.</param>
         /// <returns>Customer.</returns>
-        public static Customer UpdateWithoutEmailAndPassword(Guid id, string firstName, string lastName, Country country)
+        public static Customer UpdateWithoutEmailAndPassword(Guid id, string firstName, string lastName)
         {
             var customer = new Customer
             {
                 Id = id,
                 FirstName = firstName,
                 LastName = lastName,
-                CountryId = country.Id
             };
 
             return customer;
         }
 
-        public static Customer Update(Guid id, string firstName, string lastName, string email, Country country, string passwordHash)
+        public static Customer Update(Guid id, string firstName, string lastName, string email, string password)
         {
             var customer = new Customer
             {
@@ -123,8 +103,7 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Models
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                CountryId = country.Id,
-                PasswordHash = passwordHash,
+                Password = password,
             };
 
             return customer;

@@ -26,9 +26,9 @@ namespace StoreDDD.ApplicationLayer.DataTransferObjects
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets the country identifier.
+        ///
         /// </summary>
-        /// <value>The country identifier.</value>
-        public Guid CountryId { get; set; }
+        public string Email { get; set; }
+
     }
 }

@@ -14,13 +14,11 @@ namespace StoreDDD.DomainLayer.AggregatesModels.Customers.Commands
         /// <param name="id">The identifier.</param>
         /// <param name="firstName">The first name.</param>
         /// <param name="lastName">The last name.</param>
-        /// <param name="countryId">The country identifier.</param>
-        public UpdateCustomerCommand(Guid id, string firstName, string lastName, Guid countryId)
+        public UpdateCustomerCommand(Guid id, string firstName, string lastName)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            CountryId = countryId;
         }
 
         /// <summary>
