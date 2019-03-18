@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NET-Store-DDD", "NET-Store-DDD\NET-Store-DDD.csproj", "{4D0B1ACE-F973-4603-81BA-65781BCF107E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BC4D0518-1483-413B-A63C-8EEDE454B128} = {BC4D0518-1483-413B-A63C-8EEDE454B128}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainCore", "DomainCore\DomainCore.csproj", "{BC4D0518-1483-413B-A63C-8EEDE454B128}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D0B1ACE-F973-4603-81BA-65781BCF107E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D0B1ACE-F973-4603-81BA-65781BCF107E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D0B1ACE-F973-4603-81BA-65781BCF107E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D0B1ACE-F973-4603-81BA-65781BCF107E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {762E1C93-DF37-4A24-9B3A-EC96435AFC4C}
+	EndGlobalSection
+EndGlobal
