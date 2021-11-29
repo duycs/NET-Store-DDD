@@ -8,7 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using StoreDDD.ApplicationLayer.MappingConfigurations;
 
+/// <summary>
+/// Startup file is obsoleted in .net 6
+/// </summary>
 namespace StoreDDD.API
 {
     /// <summary>
@@ -37,7 +42,9 @@ namespace StoreDDD.API
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            //services.AddMvc();
+            services.AddControllers();
+            services.AddEndpointsApiExplorer();
 
             //auth service
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -55,33 +62,16 @@ namespace StoreDDD.API
             });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(options =>
+            services.AddSwaggerGen(c =>
             {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
-                {
-                    Title = ".NET Store DDD",
-                    Version = "v1",
-                    Description = "Example Store domain driven design using .NET framework",
-                    //TermsOfService = "Terms Of Service"
-                });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Description = "Docs for API", Version = "v1" });
             });
 
             // Cors rules
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AnyOrigin", builder =>
-                {
-                    builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
-                });
-            });
+            services.AddCors();
 
             services.AddMediatR(typeof(Startup));
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(AutoMapping));
 
             // Native DI Abstraction
             RegisterServices(services);
@@ -92,7 +82,7 @@ namespace StoreDDD.API
         /// </summary>
         /// <param name="app">The application.</param>
         /// <param name="env">The env.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
@@ -101,20 +91,19 @@ namespace StoreDDD.API
             }
 
             app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+            //app.UseMvcWithDefaultRoute();
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
                    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", ".NET-Store-DDD.API V1");
                });
 
-            app.UseCors(builder =>
-            {
-                builder.AllowAnyHeader();
-                builder.AllowAnyMethod();
-                builder.AllowCredentials();
-                builder.AllowAnyOrigin();
-            });
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthentication();
         }

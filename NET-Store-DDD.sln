@@ -1,14 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NET-Store-DDD", "NET-Store-DDD\NET-Store-DDD.csproj", "{4D0B1ACE-F973-4603-81BA-65781BCF107E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BC4D0518-1483-413B-A63C-8EEDE454B128} = {BC4D0518-1483-413B-A63C-8EEDE454B128}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainCore", "DomainCore\DomainCore.csproj", "{BC4D0518-1483-413B-A63C-8EEDE454B128}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainCore", "DomainCore\DomainCore.csproj", "{BC4D0518-1483-413B-A63C-8EEDE454B128}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fin.Api", "Fin.Api\Fin.Api.csproj", "{AAA5E7FF-BF89-4769-99E6-5348CD40CD8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC4D0518-1483-413B-A63C-8EEDE454B128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAA5E7FF-BF89-4769-99E6-5348CD40CD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA5E7FF-BF89-4769-99E6-5348CD40CD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA5E7FF-BF89-4769-99E6-5348CD40CD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA5E7FF-BF89-4769-99E6-5348CD40CD8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
